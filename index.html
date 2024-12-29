@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高考报考问答系统</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #4CAF50;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #response {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>高考报考问答系统</h1>
+    <p>请输入您的问题：</p>
+    <input type="text" id="question" placeholder="例如：XX大学的录取分数线是多少？" />
+    <button onclick="askQuestion()">提交问题</button>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    async function askQuestion() {
+      const question = document.getElementById("question").value;
+      const responseDiv = document.getElementById("response");
+
+      if (!question.trim()) {
+        responseDiv.innerHTML = "请输入一个有效的问题。";
+        responseDiv.style.color = "red";
+        return;
+      }
+
+      responseDiv.style.color = "black"; // 重置颜色
+      responseDiv.innerHTML = "正在处理您的问题，请稍候...";
+
+      try {
+        // 假设后端 API 的地址是 /api/ask
+        const response = await fetch("/api/ask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ question }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          responseDiv.innerHTML = `<strong>回答：</strong> ${data.answer}`;
+        } else {
+          responseDiv.innerHTML = "服务器错误，请稍后再试。";
+        }
+      } catch (error) {
+        responseDiv.innerHTML = "无法连接到服务器，请检查您的网络连接。";
+      }
+    }
+  </script>
+</body>
+</html>
