@@ -793,14 +793,14 @@ def ask_question():
         return
 
     best_match, score = find_best_match(user_question, qa_dataset)
-    if best_match and score > 0.6:
+    if best_match and score > 0.1:
         result.set(f"最相似的问题: {best_match['question']}\n\n答案: {best_match['answer']}\n\n匹配度: {score:.2f}")
     else:
-        result.set("抱歉，没有找到相关答案。")
+        result.set("抱歉，没有找到相关答案。(匹配度低于0.1)")
 
 # 创建主窗口
 root = tk.Tk()
-root.title("本地问答系统")
+root.title("SJTU广东寒宣问答系统（本地部署）")
 root.geometry("500x400")
 
 frame = tk.Frame(root, padx=10, pady=10)
@@ -819,4 +819,11 @@ result = tk.StringVar()
 result_label = tk.Label(frame, textvariable=result, wraplength=450, justify="left", font=("Arial", 12), fg="blue")
 result_label.pack(pady=10)
 
+label = tk.Label(frame, text="陈龙深--chenchlsh@sjtu.edu.cn", font=("Arial", 10))
+label.pack()
+
+label = tk.Label(frame, text="Copyright 2025 Longshen Chen", font=("Arial", 10))
+label.pack()
+
 root.mainloop()
+
